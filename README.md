@@ -1,3 +1,32 @@
+## Rinkeby Address
+
+.env file
+
+```
+REACT_APP_CONTRACT_ADDRESS=0x56C6EBF38A11C77D1F4F3A60Be5704897cfaf9EE
+REACT_APP_ETHERSCAN_KEY=<REPLACE THIS>
+REACT_APP_PRIVATE_KEY=<REPLACE THIS>
+REACT_APP_RINKEBY_RPC_URL=<REPLACE THIS>
+```
+
+# Setup
+
+```
+npm install
+npm run start
+```
+
+## Run
+
+```
+npx hardhat node
+npx hardhat run scripts/deploy.js --network localhost
+```
+
+# References
+
+- https://github.com/ChainSafe/web3.js#troubleshooting-and-known-issues
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
