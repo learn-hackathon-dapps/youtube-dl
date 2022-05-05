@@ -1,0 +1,14 @@
+---
+name: "Build Smart Contract"
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - "**"
+  push:
+
+jobs:
+  Build:
+    uses: learn-hackathon-dapps/node-workflow-template/.github/workflows/action.yaml@master
+    with:
+      directory: ./web3

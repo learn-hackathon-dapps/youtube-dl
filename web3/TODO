@@ -1,0 +1,18 @@
+
+wrapper(web3Storage, url):
+    // If exist download from web3Storage
+    // else download from youtube and Upload web3Storage
+        youtube-dl -i https://www.youtube.com/watch\?v\=EHNV_-pYCMw
+
+contract YoutubeDownloader {
+    // constructor
+    // Struct Video
+    // function uploadVideo
+    // function downloadVideo
+    // function searchVideo
+    // function userGetsNFTOFVideo
+}
+
+
+// web UI wrapper
+// play video from web3Storage
