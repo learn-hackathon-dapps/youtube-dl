@@ -14,9 +14,11 @@ const YtdlMainMenu = () => {
   const [youtubeAddress, setYoutubeAddress] = useState("");
   const downloadYoutubeVideo = async () => {
     console.log(">>> Downloading");
-    console.log(contract);
-    const video = await contract.methods.searchVideo("RickRoll").call();
-    console.log(video);
+    const response = await fetch('/getInfo');
+    const videoInfo = await response.json();
+    // waits until the request completes...
+    console.log(videoInfo);
+    // video = await ytdl.getInfo();
     // 1. Check in web3 Storage
     //    --> if exist download from web3Storage
     //    --> else download from youtube and upload to web3Storage
