@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { Button, Grid, TextField, Typography, Alert } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid'
 import ConnectWallet from '../ConnectWallet';
 
 const dotenv = require("dotenv");
@@ -29,7 +30,16 @@ const fetchYoutubeVideoInfo = async (payload) => {
 
 const YtdlMainMenu = ({disableButton, setDisableButton}) => {
   const [youtubeAddress, setYoutubeAddress] = useState("");
-  const [videoInfo, setVideoInfo] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [videoInfoData, setVideoInfoData] = useState([
+    { id: 0, name: '', value: '', web3: '' }
+  ]);
+  const columns = [
+    {field: 'name', headerName: 'Video Name', width: 300},
+    {field: 'value', headerName: 'Address', width: 500},
+    {field: 'web3', headerName: 'Web3 Address', width: 500},
+  ]
+
   const downloadYoutubeVideo = async () => {
     console.log(">>> Downloading");
     const videoId = youtubeAddress.split('v=')[1];
@@ -43,6 +53,15 @@ const YtdlMainMenu = ({disableButton, setDisableButton}) => {
       const response = await fetchYoutubeVideoInfo(payload);
       const message = await response.json();
       console.log(message);
+      console.log(message.videoInfo.videoDetails);
+      setSuccessMessage("Downloading video from Youtube and uploading to web3 storage");
+      setVideoInfoData(videoInfoData => [
+        { ...videoInfoData[0],
+              name: message.videoInfo.videoDetails.title,
+              value: message.videoInfo.videoDetails.video_url,
+              web3: 'nothing yet',
+        }
+      ])
     }
   }
   return (
@@ -72,6 +91,16 @@ const YtdlMainMenu = ({disableButton, setDisableButton}) => {
                 Download Youtube Video
             </Button>
         </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+              <Typography variant="h6" noWrap component="div" sx={{ m: 1 }}>
+                  Video info
+              </Typography>
+          </Grid>
+          <Grid item xs={12} sx={{ height: '450px' }}>
+              <DataGrid rows={videoInfoData} columns={columns} />
+          </Grid>
+      </Grid>
     </Grid>
   )
 }
