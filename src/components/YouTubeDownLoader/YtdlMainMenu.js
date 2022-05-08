@@ -28,6 +28,18 @@ const fetchYoutubeVideoInfo = async (payload) => {
   return response;
 }
 
+const downloadVideoFromYoutube = async (payload) => {
+  const response = await fetch('/downloadVideoFromYoutube', {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: "POST",
+    body: payload
+  });
+  return response;
+};
+
 const YtdlMainMenu = ({disableButton, setDisableButton}) => {
   const [youtubeAddress, setYoutubeAddress] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -54,6 +66,8 @@ const YtdlMainMenu = ({disableButton, setDisableButton}) => {
       const message = await response.json();
       console.log(message);
       console.log(message.videoInfo.videoDetails);
+      const downloadResponse = await downloadVideoFromYoutube(payload);
+      console.log(downloadResponse);
       setSuccessMessage("Downloading video from Youtube and uploading to web3 storage");
       setVideoInfoData(videoInfoData => [
         { ...videoInfoData[0],
