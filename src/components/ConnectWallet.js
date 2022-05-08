@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Button, Grid, Typography } from '@mui/material';
+import { useState } from 'react'
+import { Button, Grid } from '@mui/material';
 const Web3 = require("web3");
 
 const ConnectWallet = ({ disableButton ,setDisableButton}) => {

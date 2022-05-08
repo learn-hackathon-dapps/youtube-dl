@@ -9,23 +9,41 @@ const { web3 } = require("../../utils/ethereumAPI");
 dotenv.config();
 const videoContractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 const contractABI = Ytdl.abi;
-const contract = new web3.eth.Contract(Ytdl.abi, videoContractAddress)
+const contract = new web3.eth.Contract(contractABI, videoContractAddress)
+
+const checkCIDInSmartContract = async (videoId) => {
+  return contract.methods.searchVideo(videoId).call();
+}
+
+const fetchYoutubeVideoInfo = async (payload) => {
+  const response = await fetch('/getYoutubeVideoInfo', {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: "POST",
+    body: payload
+  });
+  return response;
+}
 
 const YtdlMainMenu = ({disableButton, setDisableButton}) => {
   const [youtubeAddress, setYoutubeAddress] = useState("");
+  const [videoInfo, setVideoInfo] = useState("");
   const downloadYoutubeVideo = async () => {
     console.log(">>> Downloading");
-    const payload = JSON.stringify({url: youtubeAddress});
-    const response = await fetch('/downloadYoutubeVideo', {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: "POST",
-      body: payload
-    });
-    const message = await response.json();
-    console.log(message);
+    const videoId = youtubeAddress.split('v=')[1];
+    const videoObjectInSmartContract = await checkCIDInSmartContract(videoId);
+    console.log(videoObjectInSmartContract);
+    console.log(videoObjectInSmartContract.id.length);
+    if(videoObjectInSmartContract.id.length) {
+      // if video id exist in smart contract, download from filecoin
+    } else {
+      const payload = JSON.stringify({url: youtubeAddress});
+      const response = await fetchYoutubeVideoInfo(payload);
+      const message = await response.json();
+      console.log(message);
+    }
   }
   return (
     <Grid container spacing={2}>
