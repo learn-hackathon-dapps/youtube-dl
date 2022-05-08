@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, TextField, Typography } from '@mui/material';
 import ConnectWallet from '../ConnectWallet';
 
 const dotenv = require("dotenv");
@@ -15,21 +15,27 @@ const YtdlMainMenu = ({disableButton, setDisableButton}) => {
   const [youtubeAddress, setYoutubeAddress] = useState("");
   const downloadYoutubeVideo = async () => {
     console.log(">>> Downloading");
-    const response = await fetch('/getInfo');
-    const videoInfo = await response.json();
-    // waits until the request completes...
-    console.log(videoInfo);
-    // video = await ytdl.getInfo();
-    // 1. Check in web3 Storage
-    //    --> if exist download from web3Storage
-    //    --> else download from youtube and upload to web3Storage
-    // const video = await ytdl('http://www.youtube.com/watch?v=aqz-KE-bpKQ')
-    //     .pipe(fs.createWriteStream('video.mp4'));
+    const payload = JSON.stringify({url: youtubeAddress});
+    const response = await fetch('/downloadYoutubeVideo', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: payload
+    });
+    const message = await response.json();
+    console.log(message);
   }
   return (
     <Grid container spacing={2}>
         <Grid item xs={12}>
             <ConnectWallet disableButton={disableButton} setDisableButton={setDisableButton}/>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="subtitle1" noWrap display="inline" component="div" sx={{ m: 1}}>
+            Try this video: https://www.youtube.com/watch?v=cIMSurFsMG8
+          </Typography>
         </Grid>
         <Grid item xs={12}>
             <TextField
