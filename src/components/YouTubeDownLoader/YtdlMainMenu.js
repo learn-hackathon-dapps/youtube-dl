@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Button, Grid, TextField } from '@mui/material';
+import ConnectWallet from '../ConnectWallet';
 
 const dotenv = require("dotenv");
 const Ytdl = require("./Ytdl");
@@ -10,7 +11,7 @@ const videoContractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 const contractABI = Ytdl.abi;
 const contract = new web3.eth.Contract(Ytdl.abi, videoContractAddress)
 
-const YtdlMainMenu = () => {
+const YtdlMainMenu = ({disableButton, setDisableButton}) => {
   const [youtubeAddress, setYoutubeAddress] = useState("");
   const downloadYoutubeVideo = async () => {
     console.log(">>> Downloading");
@@ -28,6 +29,9 @@ const YtdlMainMenu = () => {
   return (
     <Grid container spacing={2}>
         <Grid item xs={12}>
+            <ConnectWallet disableButton={disableButton} setDisableButton={setDisableButton}/>
+        </Grid>
+        <Grid item xs={12}>
             <TextField
                 label="Youtube Address"
                 sx={{ m:1, width: '50ch'}}
@@ -39,6 +43,7 @@ const YtdlMainMenu = () => {
                 variant="contained"
                 sx={{ m: 1 }}
                 onClick={() => downloadYoutubeVideo()}
+                disabled={disableButton}
             >
                 Download Youtube Video
             </Button>
