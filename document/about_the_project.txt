@@ -1,0 +1,26 @@
+## Inspiration
+Human knowledge and creativity are too important and too risky to be controlled by certain centralize entities. This will allows those entities to control the information and freedom of thought of the society, and even profit from it. Hence we are trying to create a decentralized repository that allows everyone to share and consume information easily while at the same time, incentivize by their actions.
+
+## What it does
+Our first step of developing the decentralized repository of creativity and knowledge is to build a decentralized application that allows users to upload and download YouTube Videos from Filecoin storage by using the YouTube Videos' URL. By using YouTube Videos' URL, user can search for the video in the Filecoin storage through our decentralized application. If the video is not existed, our application will download it from YouTube at the server backend and upload it to Filecoin, then user can download the video after the video exist in Filecoin storage. User will be rewarded with tokens (Vid Coin) through their upload and download videos' actions in our applications.
+
+## How we built it
+We have build a wrapper around "youtube-dl" tool and use it to download YouTube videos to our backend server, then we use "Web3.Storage" API to upload and download videos from Filecoin. After that, we have build a smart contract to issue Vid Coin for users when they upload and download videos.
+
+## Challenges we ran into
+We were facing difficulty to let users to do the download and upload videos actions purely from frontend using the "youtube-dl" tool because of some restrictions of the browser. 
+
+## Accomplishments that we're proud of
+We managed to solve the problem of video downloading and uploading restrictions by moving the download and upload videos functionality to the backend server. This allows us to create a seamless experience for users to share and consume YouTube videos through decentralized storage system.
+
+## What we learned
+We also have learn about the method of download and upload video to Filecoin using "Web3.Storage" API. This allow us to build more different types of applications that require huge storage.
+
+## What's next for Youtube-DL-dweb
+There are several additional features that we would like to develop in the future for our decentralized applications so that we can attract more people to use this application to share and consume information, incentivized every parties that create and consume the contents, and increase the values of the Vid Coin issues by us through our decentralized application. Those features are listed at below:
+
+  1) We would like to develop more ways to allow users to upload contents to Filecoin like allows users to be able to upload contents from their own computer. Beside that, we also will allows users to upload different types of contents like books to Filecoin  through our application.
+
+  2) We would like to develop a system to allow businesses to advertise on the decentralized applications by consuming the Vid Coin. This will create a demand for the Vid Coin and increase the value of the token.
+
+  3) We would like to create a system to allow the original contents creators to claim their contents like videos or books that have been shared to the decentralized repository. This will allows the original content creators to be able to profit from their hard works.
