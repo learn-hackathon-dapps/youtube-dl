@@ -16,6 +16,14 @@ const checkCIDInSmartContract = async (videoId) => {
   return contract.methods.searchVideo(videoId).call();
 }
 
+const createVideoRecordInSmartContract = async (videoId, cid) => {
+  console.log("Calling createVideoRecordInSmartContract");
+  console.log("Creating a record in the smart contract");
+  console.log(videoId);
+  console.log(cid);
+  await contract.methods.createVideo(videoId, cid).call();
+}
+
 const fetchYoutubeVideoInfo = async (payload) => {
   const response = await fetch('/getYoutubeVideoInfo', {
     headers: {
@@ -56,18 +64,24 @@ const YtdlMainMenu = ({disableButton, setDisableButton}) => {
     console.log(">>> Downloading");
     const videoId = youtubeAddress.split('v=')[1];
     const videoObjectInSmartContract = await checkCIDInSmartContract(videoId);
-    console.log(videoObjectInSmartContract);
-    console.log(videoObjectInSmartContract.id.length);
     if(videoObjectInSmartContract.id.length) {
+      console.log("CID Exist in Smart Contract");
       // if video id exist in smart contract, download from filecoin
+      // Example of address
+      //  https://<cid>.ipfs.dweb.link
+      //  https://bafybeic7thrieovizazkmhy32swliuc2wdvfyrc54wdq657f3pub5f52pe.ipfs.dweb.link
+      const ipfsCid = "https://" + videoObjectInSmartContract.contentCID + ".ipfs.dweb.link";
+      setVideoInfoData(videoInfoData => [
+        { ...videoInfoData[0],
+              web3: ipfsCid,
+        }
+      ])
     } else {
+      console.log("CID does not Exist in Smart Contract");
       const payload = JSON.stringify({url: youtubeAddress});
       const response = await fetchYoutubeVideoInfo(payload);
       const message = await response.json();
       console.log(message);
-      console.log(message.videoInfo.videoDetails);
-      const downloadResponse = await downloadVideoFromYoutube(payload);
-      console.log(downloadResponse);
       setSuccessMessage("Downloading video from Youtube and uploading to web3 storage");
       setVideoInfoData(videoInfoData => [
         { ...videoInfoData[0],
@@ -76,6 +90,19 @@ const YtdlMainMenu = ({disableButton, setDisableButton}) => {
               web3: 'nothing yet',
         }
       ])
+
+      const downloadResponse = await downloadVideoFromYoutube(payload);
+      const downloadMessage = await downloadResponse.json();
+      if(downloadMessage) {
+        console.log(downloadMessage);
+        const ipfsCid = "https://" + downloadMessage.cid + ".ipfs.dweb.link";
+        setVideoInfoData(videoInfoData => [
+          { ...videoInfoData[0],
+                web3: ipfsCid,
+          }
+        ])
+        await createVideoRecordInSmartContract(videoId, ipfsCid);
+      }
     }
   }
   return (

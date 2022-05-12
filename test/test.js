@@ -14,11 +14,11 @@ describe("YoutubeDownLoader", function () {
   });
 
   it("Video record exist", async function () {
-    const newVideo = await contract.createVideo("key", "CID")
-    const video = await contract.searchVideo("key");
-    expect(await video.id).to.equal('key');
+    const newVideo = await contract.createVideo("sample", "bafybeic7thrieovizazkmhy32swliuc2wdvfyrc54wdq657f3pub5f52pe")
+    const video = await contract.searchVideo("sample");
+    expect(await video.id).to.equal('sample');
     expect(await video.author).to.equal(owner.address);
-    expect(await video.contentCID).to.equal('CID');
+    expect(await video.contentCID).to.equal('bafybeic7thrieovizazkmhy32swliuc2wdvfyrc54wdq657f3pub5f52pe');
   });
 
   it("Video record does not exist", async function () {
