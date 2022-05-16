@@ -24,6 +24,7 @@ const createVideoRecordInSmartContract = async (videoId, cid) => {
   console.log("Creating a record in the smart contract");
   console.log(videoId);
   console.log(cid);
+  web3.eth.getAccounts().then(e => console.log(e));
   const accounts = await web3.eth.getAccounts();
   const video = await contract.methods.createVideo(videoId, cid).send({from: accounts[0]});
   console.log(video);
@@ -70,6 +71,11 @@ const YtdlMainMenu = ({disableButton, setDisableButton}) => {
     console.log(">>> Downloading");
     const videoId = youtubeAddress.split('v=')[1];
     const videoObjectInSmartContract = await checkCIDInSmartContract(videoId);
+    const payload = JSON.stringify({url: youtubeAddress});
+    const response = await fetchYoutubeVideoInfo(payload);
+    const message = await response.json();
+    console.log(message);
+
     if(videoObjectInSmartContract.id != "") {
       console.log("CID Exist in Smart Contract");
       // if video id exist in smart contract, download from filecoin
@@ -79,15 +85,13 @@ const YtdlMainMenu = ({disableButton, setDisableButton}) => {
       const ipfsCid = "https://" + videoObjectInSmartContract.contentCID + ".ipfs.dweb.link";
       setVideoInfoData(videoInfoData => [
         { ...videoInfoData[0],
+              name: message.videoInfo.videoDetails.title,
+              value: message.videoInfo.videoDetails.video_url,
               web3: ipfsCid,
         }
       ])
     } else {
       console.log("CID does not Exist in Smart Contract");
-      const payload = JSON.stringify({url: youtubeAddress});
-      const response = await fetchYoutubeVideoInfo(payload);
-      const message = await response.json();
-      console.log(message);
       setSuccessMessage("Downloading video from Youtube and uploading to web3 storage");
       setVideoInfoData(videoInfoData => [
         { ...videoInfoData[0],
