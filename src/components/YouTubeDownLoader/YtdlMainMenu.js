@@ -82,7 +82,7 @@ const YtdlMainMenu = ({disableButton, setDisableButton}) => {
       // Example of address
       //  https://<cid>.ipfs.dweb.link
       //  https://bafybeic7thrieovizazkmhy32swliuc2wdvfyrc54wdq657f3pub5f52pe.ipfs.dweb.link
-      const ipfsCid = "https://" + videoObjectInSmartContract.contentCID + ".ipfs.dweb.link";
+      const ipfsCid = videoObjectInSmartContract.contentCID
       setVideoInfoData(videoInfoData => [
         { ...videoInfoData[0],
               name: message.videoInfo.videoDetails.title,
